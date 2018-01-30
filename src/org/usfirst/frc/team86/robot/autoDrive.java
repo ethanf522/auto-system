@@ -18,15 +18,6 @@ public class autoDrive {
 	};
 
 	public states currentState;
-	// List<ArrayList<LinkedList<states>>> autoPlans = new
-	// ArrayList<ArrayList<LinkedList<states>>>();
-	// ArrayList<LinkedList<states>> leftStart = new
-	// ArrayList<LinkedList<states>>();
-	// ArrayList<LinkedList<states>> middleStart = new
-	// ArrayList<LinkedList<states>>();
-	// ArrayList<LinkedList<states>> rightStart = new
-	// ArrayList<LinkedList<states>>();
-	// LinkedList<states> leftPath = new LinkedList<states>();
 	states[][] autoPlans = new states[][] { 
 			{ states.driveForwardFoot, states.turnRight90, states.driveForwardFoot, states.turnRight90, states.END}, // 0000 - Pos 0 - Sw L - Sc L 
 			{ states.driveForwardFoot, states.turnRight90, states.driveForwardFoot, states.turnRight90, states.turnRight90, states.driveForwardFoot, states.END },	 // 0001 - Pos 0 - Sw L - Sc R
@@ -47,8 +38,6 @@ public class autoDrive {
 	};
 	private int stepIndex = 0;
 	private int autoStartPos;
-	private int autoSwitchPos;
-	private int autoScalePos;
 	public double currentTime;
 	public double timer;
 	private TalonSRX left1;
@@ -92,23 +81,23 @@ public class autoDrive {
 	}
 
 	public void setAutoSwitchScalePos(String gameData) {
+		// L - 0B0000	R - 0B0010
 		if (gameData.charAt(0) == 'R') {
 			autoIndex += 0B0010;
 		}
+		// L - 0B0000	R - 0B0001
 		if (gameData.charAt(1) == 'R') {
 			autoIndex += 0B0001;
 		}
 	}
 
 	public void autoInit() {
-		// autoIndex = autoSwitchPos << 1; // bit shift moves bit to most significant
-		// position
-		// autoIndex += autoScalePos;
 		currentState = autoPlans[autoIndex][stepIndex];
 		SmartDashboard.putNumber("autoIndex", autoIndex);	
 		timer = System.currentTimeMillis();
 	}
 	
+	//Method for testing purposes
 	public void driveForward() {
 		SmartDashboard.putNumber("left", left1.getMotorOutputPercent());
 		SmartDashboard.putString("Step", "driveForwardFoot");
